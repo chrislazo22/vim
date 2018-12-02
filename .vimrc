@@ -9,49 +9,32 @@ call plug#begin(expand('~/.vim/plugged'))
 "*****************************************************************************
 "" Plug install packages
 "*****************************************************************************
-Plug 'scrooloose/nerdtree'
-Plug 'jistr/vim-nerdtree-tabs'
-Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-fugitive'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-Plug 'airblade/vim-gitgutter'
-Plug 'vim-scripts/grep.vim'
+Plug 'scrooloose/nerdtree' "File explorer
+Plug 'tpope/vim-commentary' "Easier way to comment out lines
+Plug 'tpope/vim-fugitive' "Git wrapper, might delete
+Plug 'vim-airline/vim-airline' "Vim status line
+Plug 'vim-airline/vim-airline-themes' "Vim status line themes
+Plug 'airblade/vim-gitgutter' "Git diff gutter
 Plug 'vim-scripts/CSApprox'
-Plug 'bronson/vim-trailing-whitespace'
-Plug 'Raimondi/delimitMate'
-Plug 'majutsushi/tagbar'
-Plug 'ervandew/supertab'
-Plug 'scrooloose/syntastic'
-Plug 'Yggdroot/indentLine'
+Plug 'bronson/vim-trailing-whitespace' "Highlight trailing whitespace
+Plug 'Raimondi/delimitMate' "Auto close gfor quotes, brackets etc.
+Plug 'ervandew/supertab' "Auto complete with tab
+Plug 'scrooloose/syntastic' "Syntax checker
+Plug 'Yggdroot/indentLine' "Display vertical lines for indents
 Plug 'avelino/vim-bootstrap-updater'
-Plug 'sheerun/vim-polyglot'
-if isdirectory('/usr/local/opt/fzf')
-  Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim'
-else
-  Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
-  Plug 'junegunn/fzf.vim'
-endif
+Plug 'sheerun/vim-polyglot' "Language package for vim
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' } "Fuzzy finder
+Plug 'junegunn/fzf.vim'
+
 let g:make = 'gmake'
 if exists('make')
         let g:make = 'make'
 endif
 Plug 'Shougo/vimproc.vim', {'do': g:make}
 
-"" Vim-Session
-Plug 'xolox/vim-misc'
-Plug 'xolox/vim-session'
-
 if v:version >= 703
   Plug 'Shougo/vimshell.vim'
 endif
-
-if v:version >= 704
-  "" Snippets
-  Plug 'SirVer/ultisnips'
-endif
-
-Plug 'honza/vim-snippets'
 
 "" Color
 Plug 'tomasr/molokai'
@@ -60,24 +43,17 @@ Plug 'tomasr/molokai'
 "" Custom bundles
 "*****************************************************************************
 
-" html
 "" HTML Bundle
-Plug 'hail2u/vim-css3-syntax'
-Plug 'gorodinskiy/vim-coloresque'
+Plug 'hail2u/vim-css3-syntax' "CSS syntax
+Plug 'gorodinskiy/vim-coloresque' "Color preview for vim
 Plug 'tpope/vim-haml'
-Plug 'mattn/emmet-vim'
 
-
-" javascript
 "" Javascript Bundle
-Plug 'jelera/vim-javascript-syntax'
+Plug 'jelera/vim-javascript-syntax' "JS syntax
 
-
-" python
 "" Python Bundle
 Plug 'davidhalter/jedi-vim'
 Plug 'raimon49/requirements.txt.vim', {'for': 'requirements'}
-
 
 " ruby
 Plug 'tpope/vim-rails'
@@ -86,20 +62,10 @@ Plug 'tpope/vim-projectionist'
 Plug 'thoughtbot/vim-rspec'
 Plug 'ecomba/vim-ruby-refactoring'
 
-
-"*****************************************************************************
-"*****************************************************************************
-
-"" Include user's extra bundle
-if filereadable(expand("~/.vimrc.local.bundles"))
-  source ~/.vimrc.local.bundles
-endif
-
 call plug#end()
 
 " Required:
 filetype plugin indent on
-
 
 "*****************************************************************************
 "" Basic Setup
@@ -182,7 +148,7 @@ else
   let g:indentLine_char = '┆'
   let g:indentLine_faster = 1
 
-  
+
   if $COLORTERM == 'gnome-terminal'
     set term=gnome-256color
   else
@@ -190,18 +156,16 @@ else
       set term=xterm-256color
     endif
   endif
-  
-endif
 
+endif
 
 if &term =~ '256color'
   set t_ut=
 endif
 
-
 "" Disable the blinking cursor.
 set gcr=a:blinkon0
-set scrolloff=3
+set scrolloff=5
 
 "" Status bar
 set laststatus=2
@@ -260,22 +224,9 @@ set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.pyc,*.db,*.sqlite
 nnoremap <silent> <F2> :NERDTreeFind<CR>
 nnoremap <silent> <F3> :NERDTreeToggle<CR>
 
-" grep.vim
-nnoremap <silent> <leader>f :Rgrep<CR>
-let Grep_Default_Options = '-IR'
-let Grep_Skip_Files = '*.log *.db'
-let Grep_Skip_Dirs = '.git node_modules'
-
 " vimshell.vim
 let g:vimshell_user_prompt = 'fnamemodify(getcwd(), ":~")'
 let g:vimshell_prompt =  '$ '
-
-" terminal emulation
-if g:vim_bootstrap_editor == 'nvim'
-  nnoremap <silent> <leader>sh :terminal<CR>
-else
-  nnoremap <silent> <leader>sh :VimShellCreate<CR>
-endif
 
 "*****************************************************************************
 "" Functions
@@ -316,6 +267,9 @@ augroup vimrc-make-cmake
   autocmd BufNewFile,BufRead CMakeLists.txt setlocal filetype=cmake
 augroup END
 
+"" Delete white sapce on save
+autocmd BufWritePre * %s/\s\+$//e
+
 set autoread
 
 "*****************************************************************************
@@ -335,12 +289,6 @@ noremap <Leader>gs :Gstatus<CR>
 noremap <Leader>gb :Gblame<CR>
 noremap <Leader>gd :Gvdiff<CR>
 noremap <Leader>gr :Gremove<CR>
-
-" session management
-nnoremap <leader>so :OpenSession<Space>
-nnoremap <leader>ss :SaveSession<Space>
-nnoremap <leader>sd :DeleteSession<CR>
-nnoremap <leader>sc :CloseSession<CR>
 
 "" Tabs
 nnoremap <Tab> gt
@@ -377,12 +325,6 @@ endif
 cnoremap <C-P> <C-R>=expand("%:p:h") . "/" <CR>
 nnoremap <silent> <leader>b :Buffers<CR>
 nnoremap <silent> <leader>e :FZF -m<CR>
-
-" snippets
-let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsJumpForwardTrigger="<tab>"
-let g:UltiSnipsJumpBackwardTrigger="<c-b>"
-let g:UltiSnipsEditSplit="vertical"
 
 " syntastic
 let g:syntastic_always_populate_loc_list=1
@@ -451,10 +393,8 @@ nnoremap <Leader>o :.Gbrowse<CR>
 "" Custom configs
 "*****************************************************************************
 
-" html
-" for html files, 2 spaces
+" HTML
 autocmd Filetype html setlocal ts=2 sw=2 expandtab
-
 
 " javascript
 let g:javascript_enable_domhtmlcss = 1
@@ -462,9 +402,8 @@ let g:javascript_enable_domhtmlcss = 1
 " vim-javascript
 augroup vimrc-javascript
   autocmd!
-  autocmd FileType javascript set tabstop=4|set shiftwidth=4|set expandtab softtabstop=4
+  autocmd FileType javascript set tabstop=2|set shiftwidth=2|set expandtab softtabstop=2
 augroup END
-
 
 " python
 " vim-python
@@ -496,7 +435,6 @@ let g:airline#extensions#virtualenv#enabled = 1
 " Default highlight is better than polyglot
 let g:polyglot_disabled = ['python']
 let python_highlight_all = 1
-
 
 " ruby
 let g:rubycomplete_buffer_loading = 1
@@ -543,15 +481,6 @@ nnoremap <leader>rit  :RInlineTemp<cr>
 vnoremap <leader>rrlv :RRenameLocalVariable<cr>
 vnoremap <leader>rriv :RRenameInstanceVariable<cr>
 vnoremap <leader>rem  :RExtractMethod<cr>
-
-
-"*****************************************************************************
-"*****************************************************************************
-
-"" Include user's local vim config
-if filereadable(expand("~/.vimrc.local"))
-  source ~/.vimrc.local
-endif
 
 "*****************************************************************************
 "" Convenience variables
