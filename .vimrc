@@ -1,61 +1,50 @@
+set nocompatible "be iMproved
+
 let vimplug_exists=expand('~/.vim/autoload/plug.vim')
 
-let g:vim_bootstrap_langs = "html,javascript,python,ruby"
-let g:vim_bootstrap_editor = "vim"
-
-" Required:
+"Required:
 call plug#begin(expand('~/.vim/plugged'))
 
 "*****************************************************************************
-"" Plug install packages
+"Plug install packages"
 "*****************************************************************************
-Plug 'scrooloose/nerdtree' "File explorer
-Plug 'tpope/vim-commentary' "Easier way to comment out lines
-Plug 'tpope/vim-fugitive' "Git wrapper, might delete
-Plug 'vim-airline/vim-airline' "Vim status line
-Plug 'vim-airline/vim-airline-themes' "Vim status line themes
-Plug 'airblade/vim-gitgutter' "Git diff gutter
-Plug 'vim-scripts/CSApprox'
-Plug 'bronson/vim-trailing-whitespace' "Highlight trailing whitespace
-Plug 'Raimondi/delimitMate' "Auto close gfor quotes, brackets etc.
-Plug 'ervandew/supertab' "Auto complete with tab
-Plug 'scrooloose/syntastic' "Syntax checker
-Plug 'Yggdroot/indentLine' "Display vertical lines for indents
-Plug 'avelino/vim-bootstrap-updater'
+Plug 'scrooloose/nerdtree'
+Plug 'tpope/vim-commentary'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'powerline/powerline'
+Plug 'airblade/vim-gitgutter'
+Plug 'bronson/vim-trailing-whitespace'
+Plug 'Raimondi/delimitMate'
+Plug 'ervandew/supertab'
+Plug 'Yggdroot/indentLine'
 Plug 'sheerun/vim-polyglot' "Language package for vim
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' } "Fuzzy finder
 Plug 'junegunn/fzf.vim'
+Plug 'mattn/emmet-vim'
+Plug 'w0rp/ale' "Asynchronous linter
+Plug 'honza/vim-snippets' "Method autocompletion
+Plug 'honza/vim-snippets'
+Plug 'MarcWeber/vim-addon-mw-utils'
+Plug 'tomtom/tlib_vim'
+Plug 'garbas/vim-snipmate'
 
-let g:make = 'gmake'
-if exists('make')
-        let g:make = 'make'
-endif
-Plug 'Shougo/vimproc.vim', {'do': g:make}
 
-if v:version >= 703
-  Plug 'Shougo/vimshell.vim'
-endif
-
-"" Color
-Plug 'tomasr/molokai'
+"Color
+Plug 'tomasr/molokai'"
 
 "*****************************************************************************
-"" Custom bundles
+"Custom bundles
 "*****************************************************************************
 
-"" HTML Bundle
+"HTML Bundle
 Plug 'hail2u/vim-css3-syntax' "CSS syntax
-Plug 'gorodinskiy/vim-coloresque' "Color preview for vim
 Plug 'tpope/vim-haml'
 
-"" Javascript Bundle
-Plug 'jelera/vim-javascript-syntax' "JS syntax
-
-"" Python Bundle
+"Python Bundle
 Plug 'davidhalter/jedi-vim'
-Plug 'raimon49/requirements.txt.vim', {'for': 'requirements'}
 
-" ruby
+"Ruby
 Plug 'tpope/vim-rails'
 Plug 'tpope/vim-rake'
 Plug 'tpope/vim-projectionist'
@@ -64,13 +53,13 @@ Plug 'ecomba/vim-ruby-refactoring'
 
 call plug#end()
 
-" Required:
+"Required:
 filetype plugin indent on
 
 "*****************************************************************************
-"" Basic Setup
+"Basic Setup
 "*****************************************************************************"
-"" Encoding
+"Encoding
 set encoding=utf-8
 set fileencoding=utf-8
 set fileencodings=utf-8
@@ -78,38 +67,31 @@ set bomb
 set binary
 set ttyfast
 
-"" Fix backspace indent
+"Fix backspace indent
 set backspace=indent,eol,start
 
-"" Tabs. May be overriten by autocmd rules
-set tabstop=4
+"Tabs. May be overriten by autocmd rules
+set tabstop=2
 set softtabstop=0
 set shiftwidth=4
 set expandtab
 
-"" Map leader to ,
+"Map leader to ,
 let mapleader=','
 
-"" Enable hidden buffers
+"Enable hidden buffers
 set hidden
 
-"" Searching
+"Searching
 set hlsearch
 set incsearch
 set ignorecase
 set smartcase
 
-"" Directories for swp files
+"Directories for swp files
 set nobackup
 set noswapfile
-
 set fileformats=unix,dos,mac
-
-if exists('$SHELL')
-    set shell=$SHELL
-else
-    set shell=/bin/sh
-endif
 
 " session management
 let g:session_directory = "~/.vim/session"
@@ -123,6 +105,7 @@ let g:session_command_aliases = 1
 syntax on
 set ruler
 set number
+set colorcolumn=101
 
 let no_buffers_menu=1
 if !exists('g:not_finish_vimplug')
@@ -163,14 +146,14 @@ if &term =~ '256color'
   set t_ut=
 endif
 
-"" Disable the blinking cursor.
+" Disable the blinking cursor
 set gcr=a:blinkon0
 set scrolloff=5
 
-"" Status bar
+" Status bar
 set laststatus=2
 
-"" Use modeline overrides
+" Use modeline overrides
 set modeline
 set modelines=10
 
@@ -185,13 +168,8 @@ set statusline=%F%m%r%h%w%=(%{&ff}/%Y)\ (line\ %l\/%L,\ col\ %c)\
 nnoremap n nzzzv
 nnoremap N Nzzzv
 
-if exists("*fugitive#statusline")
-  set statusline+=%{fugitive#statusline()}
-endif
-
 " vim-airline
 let g:airline_theme = 'powerlineish'
-let g:airline#extensions#syntastic#enabled = 1
 let g:airline#extensions#branch#enabled = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tagbar#enabled = 1
@@ -280,16 +258,6 @@ set autoread
 noremap <Leader>h :<C-u>split<CR>
 noremap <Leader>v :<C-u>vsplit<CR>
 
-"" Git
-noremap <Leader>ga :Gwrite<CR>
-noremap <Leader>gc :Gcommit<CR>
-noremap <Leader>gsh :Gpush<CR>
-noremap <Leader>gll :Gpull<CR>
-noremap <Leader>gs :Gstatus<CR>
-noremap <Leader>gb :Gblame<CR>
-noremap <Leader>gd :Gvdiff<CR>
-noremap <Leader>gr :Gremove<CR>
-
 "" Tabs
 nnoremap <Tab> gt
 nnoremap <S-Tab> gT
@@ -297,12 +265,6 @@ nnoremap <silent> <S-t> :tabnew<CR>
 
 "" Set working directory
 nnoremap <leader>. :lcd %:p:h<CR>
-
-"" Opens an edit command with the path of the currently edited file filled in
-noremap <Leader>e :e <C-R>=expand("%:p:h") . "/" <CR>
-
-"" Opens a tab edit command with the path of the currently edited file filled
-noremap <Leader>te :tabe <C-R>=expand("%:p:h") . "/" <CR>
 
 "" fzf.vim
 set wildmode=list:longest,list:full
@@ -325,19 +287,6 @@ endif
 cnoremap <C-P> <C-R>=expand("%:p:h") . "/" <CR>
 nnoremap <silent> <leader>b :Buffers<CR>
 nnoremap <silent> <leader>e :FZF -m<CR>
-
-" syntastic
-let g:syntastic_always_populate_loc_list=1
-let g:syntastic_error_symbol='✗'
-let g:syntastic_warning_symbol='⚠'
-let g:syntastic_style_error_symbol = '✗'
-let g:syntastic_style_warning_symbol = '⚠'
-let g:syntastic_auto_loc_list=1
-let g:syntastic_aggregate_errors = 1
-
-" Tagbar
-nmap <silent> <F4> :TagbarToggle<CR>
-let g:tagbar_autofocus = 1
 
 " Disable visualbell
 set noerrorbells visualbell t_vb=
@@ -396,14 +345,12 @@ nnoremap <Leader>o :.Gbrowse<CR>
 " HTML
 autocmd Filetype html setlocal ts=2 sw=2 expandtab
 
-" javascript
-let g:javascript_enable_domhtmlcss = 1
+" CSS, SCSS
+autocmd FileType css setlocal ts=2 sw=2 expandtab
+autocmd FileType scss setlocal ts=2 sw=2 expandtab
 
 " vim-javascript
-augroup vimrc-javascript
-  autocmd!
-  autocmd FileType javascript set tabstop=2|set shiftwidth=2|set expandtab softtabstop=2
-augroup END
+autocmd FileType javascript setlocal ts=2 sw=2 expandtab
 
 " python
 " vim-python
@@ -425,9 +372,6 @@ let g:jedi#show_call_signatures = "0"
 let g:jedi#completions_command = "<C-Space>"
 let g:jedi#smart_auto_mappings = 0
 
-" syntastic
-let g:syntastic_python_checkers=['python', 'flake8']
-
 " vim-airline
 let g:airline#extensions#virtualenv#enabled = 1
 
@@ -447,29 +391,11 @@ augroup vimrc-ruby
   autocmd FileType ruby set tabstop=2|set shiftwidth=2|set expandtab softtabstop=2
 augroup END
 
-let g:tagbar_type_ruby = {
-    \ 'kinds' : [
-        \ 'm:modules',
-        \ 'c:classes',
-        \ 'd:describes',
-        \ 'C:contexts',
-        \ 'f:methods',
-        \ 'F:singleton methods'
-    \ ]
-\ }
-
 " RSpec.vim mappings
 map <Leader>t :call RunCurrentSpecFile()<CR>
 map <Leader>s :call RunNearestSpec()<CR>
 map <Leader>l :call RunLastSpec()<CR>
 map <Leader>a :call RunAllSpecs()<CR>
-
-" For ruby refactory
-if has('nvim')
-  runtime! macros/matchit.vim
-else
-  packadd! matchit
-endif
 
 " Ruby refactory
 nnoremap <leader>rap  :RAddParameter<cr>
@@ -481,6 +407,14 @@ nnoremap <leader>rit  :RInlineTemp<cr>
 vnoremap <leader>rrlv :RRenameLocalVariable<cr>
 vnoremap <leader>rriv :RRenameInstanceVariable<cr>
 vnoremap <leader>rem  :RExtractMethod<cr>
+
+" Emmet config
+let g:user_emmet_leader_key='<C-e>'
+let g:user_emmet_settings = {
+  \  'javascript.jsx' : {
+    \      'extends' : 'jsx',
+    \  },
+  \}
 
 "*****************************************************************************
 "" Convenience variables
@@ -521,3 +455,9 @@ else
   let g:airline_symbols.readonly = ''
   let g:airline_symbols.linenr = ''
 endif
+
+"TEMP
+noremap <Up> <NOP>
+noremap <Down> <NOP>
+noremap <Left> <NOP>
+noremap <Right> <NOP>
